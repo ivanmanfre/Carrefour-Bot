@@ -11,13 +11,12 @@ service = Service('/Users/ivanmanfredi/Downloads/chromedriver-mac-arm64/chromedr
 driver = webdriver.Chrome(service=service)
 
 def determine_product_cat(url):
-    # Example logic to determine product type based on URL
-    if 'arlistan' in url:
-        return "Cafe Instantaneo"
-    elif 'cafe-instantaneo' in url:
-        return "Cafe Instantaneo"
+    # Simplified logic for determining product type based on URL
+    if 'arlistan' in url or 'cafe-instantaneo' in url:
+        return "Café Instantáneo"
     else:
         return "Unknown Product Type"
+
 # List of product URLs
 product_urls = [
     'https://www.carrefour.com.ar/infusion-a-base-de-cafe-arlistan-en-frasco-100-g-727996/p',
@@ -29,31 +28,33 @@ product_urls = [
 products_data = []
 
 for url in product_urls:
-    # Determine the product type based on the URL
     product_cat = determine_product_cat(url)
-
-    # Navigate to the product page
     driver.get(url)
-    time.sleep(5)
+    time.sleep(5)  # Adjust sleep time based on page load times
     
-    # Extract the product name and price
-
-    product_name = driver.find_element(By.XPATH, '//h1[@class="vtex-store-components-3-x-productNameContainer vtex-store-components-3-x-productNameContainer--quickview mv0 t-heading-4"]').text
-    product_price = driver.find_element(By.XPATH, '//*[@class="valtech-carrefourar-product-price-0-x-sellingPriceValue"]').text
+    product_name = driver.find_element(By.XPATH, '//h1[contains(@class, "productNameContainer")]').text
+    # Check for "c/u" in the price text to decide which XPath to use
+    price_element = driver.find_element(By.XPATH, '//*[contains(@class, "product-price-0-x-sellingPriceValue")]')
+    if "c/u" in price_element.text:
+        # If "c/u" is present, use an alternate XPath for the regular price
+        product_price_element = driver.find_element(By.XPATH, '//*[@class="valtech-carrefourar-product-price-0-x-listPrice"]') 
+        product_price = product_price_element.text
+    else:
+        product_price = price_element.text
     
-    print(f'Product: {product_name}, Price: {product_price}, Category:{product_cat} ')
+    # Assuming price per kg is always desired and correctly located
+    product_price_per_kg = driver.find_element(By.XPATH, '//*[contains(@class, "dynamic-weight-price-0-x-currencyContainer")]').text
+    
+    products_data.append([product_name, product_price, product_price_per_kg, product_cat])
 
-    # Append product data to the list
-    products_data.append([product_name, product_price, product_cat])
+# Write to CSV outside the loop
+csv_file = 'products_prices.csv'
+with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Product Name', 'Price', 'Price per KG', 'Product Category'])  # Write header
+    writer.writerows(products_data)
 
+print(f'Data saved to {csv_file}')
 
-    # Specify the CSV file name
-    csv_file = 'products_prices.csv'
-
-    # Write product data to a CSV file
-    with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow(['Product Name', 'Price', 'Product Cat'])  # Writing header
-        writer.writerows(products_data)
-
-    print(f'Data saved to {csv_file}')
+# Clean up by closing the driver after all operations
+driver.quit()
