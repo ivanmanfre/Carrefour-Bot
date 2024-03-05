@@ -10,19 +10,26 @@ service = Service('/Users/ivanmanfredi/Downloads/chromedriver-mac-arm64/chromedr
 # Initialize the Chrome driver
 driver = webdriver.Chrome(service=service)
 
+# Function to read URLs from a file
+def read_product_urls(file_path):
+    with open(file_path, 'r') as file:
+        return [line.strip() for line in file]
 def determine_product_cat(url):
     # Simplified logic for determining product type based on URL
     if 'arlistan' in url or 'cafe-instantaneo' in url:
         return "Café Instantáneo"
+    elif 'te' in url:
+        return "Te en Saquitos"
+    elif 'cacao-en-polvo' in url:
+        return "Cacao en Polvo"
+    elif 'yerba' in url:
+        return "Yerba Mate"
     else:
         return "Unknown Product Type"
+# Adjust this path to where you save your file
+product_urls_file = 'product_urls.txt'
+product_urls = read_product_urls(product_urls_file)
 
-# List of product URLs
-product_urls = [
-    'https://www.carrefour.com.ar/infusion-a-base-de-cafe-arlistan-en-frasco-100-g-727996/p',
-    'https://www.carrefour.com.ar/cafe-instantaneo-dolca-suave-origenes-en-frasco-100-g-729425/p',
-    'https://www.carrefour.com.ar/cafe-instantaneo-la-virginia-especial-clasico-170-g/p'
-]
 
 # Prepare a list to hold product data
 products_data = []
