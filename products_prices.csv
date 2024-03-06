@@ -1,6 +1,116 @@
-Product Name,Price,Price per KG,Product Category
-Infusión a base de café Arlistan en frasco 100 g.,"$ 2.850,00","$ 28.500,00",Café Instantáneo
-Café instantaneo Dolca suave origenes en frasco 100 g.,"$ 5.280,00","$ 52.800,00",Café Instantáneo
-Café instantáneo La Virginia especial clásico 170 g.,"$ 4.985,00","$ 29.323,53",Café Instantáneo
-Te en saquitos diamantado Taragüi x 50 uni,"$ 1.119,00","$ 11.190,00",Te en Saquitos
-Té en saquitos Green Hills 50 u.,"$ 1.770,00","$ 17.700,00",Te en Saquitos
+Product Name,Price,Price per KG,Product Category,Date
+Infusión a base de café Arlistan en frasco 100 g.,"$ 2.850,00","$ 28.500,00",Café Instantáneo,06-03-2024
+Café instantaneo Dolca suave origenes en frasco 100 g.,"$ 5.280,00","$ 52.800,00",Café Instantáneo,06-03-2024
+Café instantáneo La Virginia especial clásico 170 g.,"$ 4.985,00","$ 29.323,53",Café Instantáneo,06-03-2024
+Te en saquitos diamantado Taragüi x 50 uni,"$ 1.119,00","$ 11.190,00",Te en Saquitos,06-03-2024
+Té en saquitos Green Hills 50 u.,"$ 1.770,00","$ 17.700,00",Te en Saquitos,06-03-2024
+Cacao en polvo Nesquik 150 g.,"$ 1.314,00","$ 8.760,00",Cacao en Polvo,06-03-2024
+Cacao en polvo Toddy original bolsa 180 g.,"$ 1.310,00","$ 7.277,78",Cacao en Polvo,06-03-2024
+Yerba mate Playadito suave con palo 1 kg.,"$ 3.790,00","$ 3.790,00",Yerba Mate,06-03-2024
+Yerba mate Rosamonte con palo 1 kg.,"$ 2.385,00","$ 2.385,00",Yerba Mate,06-03-2024
+Vino tinto malbec Elementos 750 cc.,"$ 3.429,00","$ 4.572,00",Vino Tinto,06-03-2024
+Vino tinto malbec Portillo en botella 750 cc.,"$ 2.900,00","$ 3.866,67",Vino Tinto,06-03-2024
+Vino tinto malbec Finca Las Moras 750 cc.,"$ 2.780,00","$ 3.706,67",Vino Tinto,06-03-2024
+Cerveza rubia Schneider 710 cc.,"$ 1.665,00","$ 2.345,07",Cerveza,06-03-2024
+Cerveza rubia Quilmes 473 cc.,"$ 1.180,00","$ 1.871,04",Cerveza,06-03-2024
+Cerveza rubia Andes Origen 473 cc.,"$ 1.430,00","$ 3.023,26",Cerveza,06-03-2024
+Cerveza rubia Patagonia bohemian 730 cc.,"$ 3.000,00","$ 4.109,59",Cerveza,06-03-2024
+Agua mineral Villavicencio con gas pet 500 cc.,"$ 749,00","$ 1.498,00",Agua con Gas,06-03-2024
+Agua mineral con gas Eco de los Andes 500 cc.,"$ 759,00","$ 1.518,00",Agua con Gas,06-03-2024
+Soda Saldan 1.5 l.,"$ 800,00","$ 533,33",Agua con Gas,06-03-2024
+Jugo Citric de naranja clásica tetra 1 l.,"$ 2.650,00","$ 2.650,00",Jugo Concentrado,06-03-2024
+Jugo multifruta Pura frutta tetra 1 lt.,"$ 3.199,00","$ 3.199,00",Jugo Concentrado,06-03-2024
+Coca cola zero 2.25 lts.,"$ 2.900,00","$ 1.288,89",Gaseosa,06-03-2024
+Gaseosa cola Pepsi regular pet 2 lt.,"$ 2.020,00","$ 1.010,00",Gaseosa,06-03-2024
+Gaseosa cola classic Cunnington pet 2.25 lts.,"$ 1.140,00","$ 506,67",Gaseosa,06-03-2024
+Caldo Maggi® sabor verdura menos sodio 114 g.,"$ 1.400,00","$ 12.280,70",Caldo Concentrado,06-03-2024
+Caldo Maggi® sabor carne 114 g.,"$ 1.400,00","$ 12.280,70",Caldo Concentrado,06-03-2024
+Vinagre de alcohol Casalta 1 l.,"$ 1.065,00","$ 1.065,00",Vinagre,06-03-2024
+Vinagre de manzana clásico Casalta pet 1 l.,"$ 2.415,00","$ 2.415,00",Vinagre,06-03-2024
+Mayonesa Natura 237 g.,"$ 600,00","$ 2.400,00",Mayonesa,06-03-2024
+Mayonesa Menoyo doy pack 250 cc.,"$ 426,00","$ 1.704,00",Mayonesa,06-03-2024
+Sal fina Celusal paquete 500 g.,"$ 850,00","$ 1.700,00",Sal Fina,06-03-2024
+Sal fina Dos Anclas salero 500 g.,"$ 1.250,00","$ 2.500,00",Sal Fina,06-03-2024
+Mermelada BC La Campagnola frutilla 390 g.,"$ 2.500,00","$ 6.410,26",Mermelada,06-03-2024
+Mermelada BC La Campagnola durazno 390 g.,"$ 2.240,00","$ 5.743,59",Mermelada,06-03-2024
+Mermelada Arcor de durazno 454 g.,"$ 1.960,00","$ 4.317,18",Mermelada,06-03-2024
+Mermelada Emeth de durazno pote 420 g.,"$ 1.525,00","$ 3.630,95",Mermelada,06-03-2024
+Dulce de batata Arcor 500 g.,"$ 1.190,00","$ 2.380,00",Dulce de Batata,06-03-2024
+Azúcar Ledesma molida superior bolsa 1 kg.,"$ 1.400,00","$ 1.400,00",Azucar,06-03-2024
+Azúcar tipo A La Providencia 1 kg.,"$ 999,00","$ 999,00",Azucar,06-03-2024
+Azúcar comun tipo A Bella vista 1 kg.,"$ 1.050,00","$ 1.050,00",Azucar,06-03-2024
+Lentejas secas remojadas Inalpa lata 300 g.,"$ 749,00","$ 2.496,67",Lentejas,06-03-2024
+Lentejas secas remojadas Carrefour classic en lata 300 g.,"$ 799,00","$ 2.077,40",Lentejas,06-03-2024
+Arvejas secas remojadas Doña Pupa tetra 340 g.,"$ 410,00","$ 1.205,88",Arvejas,06-03-2024
+Arvejas secas remojadas Carrefour classic en lata 300 g.,"$ 549,00","$ 1.372,50",Arvejas,06-03-2024
+Tomate perita La campagnola 400 g.,"$ 890,00","$ 2.225,00",Tomate Enlatado,06-03-2024
+Tomate perita Arcor 400 g.,"$ 905,00","$ 2.262,50",Tomate Enlatado,06-03-2024
+Pan blanco Lactal bolsa 315 g.,"$ 1.830,00","$ 5.809,52",Pan Lactal,06-03-2024
+Pan de mesa Bimbo tipo artesano 500 g.,"$ 3.675,00","$ 7.350,00",Pan Lactal,06-03-2024
+Pan de salvado Lactal rodajas finas 560 g.,"$ 2.760,00","$ 4.928,57",Pan Lactal,06-03-2024
+Galletitas Toddy con chips de chocolate 126 g.,"$ 1.399,00","$ 11.103,17",Galletita Dulces,06-03-2024
+Galletitas dulces Oreo rellenas con crema 354 g.,"$ 2.400,00","$ 6.779,66",Galletita Dulces,06-03-2024
+Galletitas Chocolinas chocolate 150 g.,"$ 915,00","$ 6.100,00",Galletita Dulces,06-03-2024
+Galletitas crackers La Providencia 505 g.,"$ 1.280,00","$ 2.534,65",Galletita de Agua,06-03-2024
+Galletitas crackers Traviata sandwich 3 x 101 g.,"$ 1.185,00","$ 3.910,89",Galletita de Agua,06-03-2024
+Galletitas Cerealitas clásicas x3 636 g.,"$ 2.300,00","$ 3.616,35",Galletita de Agua,06-03-2024
+Harina de Trigo 000 Caserita x 1 kg,"$ 799,00","$ 799,00",Harina de Trigo,06-03-2024
+Arroz largo fino Molinos ala grano selecto 1 kg.,"$ 2.190,00","$ 2.190,00",Arroz,06-03-2024
+Arroz parboil Gallo oro en bolsa 500 g.,"$ 1.700,00","$ 3.400,00",Arroz,06-03-2024
+Arroz tipo largo fino 00000 Vanguardia 500 g.,"$ 990,00","$ 1.980,00",Arroz,06-03-2024
+Fideos tallarin N5 Lucchetti 500 g.,"$ 1.100,00","$ 2.200,00",Pastas,06-03-2024
+Fideos tirabuzones N28 Matarazzo 500 g.,"$ 1.300,00","$ 2.600,00",Pastas,06-03-2024
+Fideos tallarines Don Vicente en bolsa 500 g.,"$ 1.950,00","$ 3.900,00",Pastas,06-03-2024
+Asado El Mercado x kg.,"$ 4.999,00","$ 4.999,00",Asado,06-03-2024
+Carnaza comun El Mercado,"$ 4.289,00","$ 4.289,00",Carnaza,06-03-2024
+Carré de cerdo con hueso x kg.,"$ 2.799,00
+- 24%","$ 279,90",Carre de Cerdo,06-03-2024
+Paleta El Mercado x kg.,"$ 5.599,00","$ 5.599,00",Paleta Vaca,06-03-2024
+Carne picada Bulnez,"$ 2.749,00","$ 2.749,00",Carne Picada,06-03-2024
+Milanesa de nalga El Mercado x kg.,"$ 6.999,00","$ 6.999,00",Nalga,06-03-2024
+Pechito de cerdo x kg.,"$ 2.799,00
+- 26%","$ 279,90",Pechito de Cerdo,06-03-2024
+Pollo entero congelado x kg.,"$ 1.899,00","$ 1.899,00",Pollo,06-03-2024
+Filet de merluza natural Carrefour 500 g.,"$ 5.990,00","$ 11.980,00",Filet de Merluza,06-03-2024
+Mortadela bologna El Bierzo x kg.,"$ 3.900,00","$ 3.900,00",Mortadela,06-03-2024
+Mortadela Paladini mini 300 g.,"$ 2.010,00","$ 6.700,00",Mortadela,06-03-2024
+Paleta cocida Paladini cristal x kg.,"$ 10.295,00","$ 10.295,00",Paleta Cocida,06-03-2024
+Paleta cocida Paladini feteada fetas finas 200 g.,"$ 2.490,00","$ 12.450,00",Paleta Cocida,06-03-2024
+Salchichón triple familiar Paladini x 300 g.,"$ 2.415,00","$ 8.050,00",Salchichon,06-03-2024
+Salchichón primavera Lario x kg.,"$ 8.985,00","$ 8.985,00",Salchichon,06-03-2024
+Salame fuet Cagnoli 150 g.,"$ 3.325,00","$ 22.166,67",Salame,06-03-2024
+Salame fuet Bocatti picado fino 130 g.,"$ 3.020,00","$ 23.230,77",Salame,06-03-2024
+Aceite de girasol Pureza 1500 cc.,"$ 2.400,00","$ 1.600,00",Aceite de Girasol,06-03-2024
+Aceite de girasol Cañuelas 1.5 l.,"$ 2.200,00","$ 1.466,67",Aceite de Girasol,06-03-2024
+Margarina en pan Danica clásica 200 g.,"$ 1.040,00","$ 5.200,00",Margarina,06-03-2024
+Margarina en pan Delicia vitamina A y D 200 g.,"$ 1.100,00","$ 5.500,00",Margarina,06-03-2024
+Leche ultra entera Carrefour classic sachet 1 lt.,"$ 819,00","$ 745,29",Leche Entera,06-03-2024
+Leche multivitaminas 3% La Serenísima sachet 1 l.,"$ 1.090,00","$ 1.090,00",Leche Entera,06-03-2024
+Leche en polvo La lechera entera 400 g.,"$ 3.015,00","$ 7.537,50",Leche en Polvo,06-03-2024
+Leche en polvo La serenísima descremada 400 g.,"$ 3.610,00","$ 9.025,00",Leche en Polvo,06-03-2024
+Queso fundido Finlandia balance pote 290 g.,"$ 2.620,00","$ 9.034,48",Queso untable,06-03-2024
+Queso crema clásico Casancrem 480 g.,"$ 3.835,00","$ 7.989,58",Queso untable,06-03-2024
+Queso cuartirolo Don atilio x kg.,"$ 4.035,00","$ 4.035,00",Queso Cuartirolo,06-03-2024
+Queso cuartirolo Verónica trozado x kg.,"$ 4.280,00","$ 4.280,00",Queso Cuartirolo,06-03-2024
+Queso rallado La Serenísima reggianito flow pack 175 g.,"$ 3.710,00","$ 21.200,00",Queso Rallado,06-03-2024
+Queso en hebras light La paulina italiano fp 400 g.,"$ 5.099,00","$ 12.747,50",Queso Rallado,06-03-2024
+Manteca La Serenísima extra para untar 200 g.,"$ 2.220,00","$ 11.100,00",Manteca,06-03-2024
+Manteca La paulina 100 g.,"$ 785,00","$ 7.850,00",Manteca,06-03-2024
+Yogur bebible entero Gran compra sabor frutilla 900 g.,"$ 1.385,00","$ 1.538,89",Yogur Bebible,06-03-2024
+Yogur bebible frutilla La SerenÍsima clásico 900 g.,"$ 1.825,00","$ 2.027,78",Yogur Bebible,06-03-2024
+Dulce de leche clásico La Serenísima 400 g.,"$ 1.515,00","$ 3.787,50",Dulce de Leche,06-03-2024
+Dulce de leche San Ignacio tradicional 400 g.,"$ 1.760,00","$ 4.400,00",Dulce de Leche,06-03-2024
+Huevos blancos Avicoper 6 u.,"$ 1.130,00","$ 188,33",Huevo,06-03-2024
+Huevo blanco La Piara carton x 6 uni,"$ 1.420,00","$ 236,67",Huevo,06-03-2024
+Manzana roja x kg.,"$ 1.899,00","$ 1.899,00",Manzana Roja,06-03-2024
+Pera packhams Huella Natural x kg.,"$ 1.990,00","$ 1.990,00",Pera,06-03-2024
+Batata x kg.,"$ 699,00
+- 12%","$ 699,00",Batata,06-03-2024
+Acelga congelada Granja de sol en bolsa 500 g.,"$ 1.980,00","$ 3.960,00",Acelga,06-03-2024
+Cebolla x kg,"$ 990,00","$ 990,00",Cebolla,06-03-2024
+Choclo en granos Carrefour classic sin sal en lata 300 g.,"$ 1.299,00","$ 4.026,90",Choclo en Granos,06-03-2024
+Lechuga francesa hidropónica 220 g.,"$ 1.499,00","$ 1.499,00",Lechuga,06-03-2024
+Tomate x kg.,"$ 1.149,00
+- 10%","$ 1.149,00",Tomate,06-03-2024
+Zapallo anco x kg.,"$ 389,00
+- 22%","$ 389,00",Zapallo,06-03-2024
