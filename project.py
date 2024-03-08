@@ -4,8 +4,17 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import time
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
+import os
+import psycopg2
+import re
 
+# Database connection parameters
+dbname = 'portfolio'
+user = 'postgres'
+password = 'mamama00'
+host = 'localhost'
+port= '5433'
 # Specify the path to ChromeDriver
 service = Service('/Users/ivanmanfredi/Downloads/chromedriver-mac-arm64/chromedriver')
 
@@ -140,12 +149,41 @@ def determine_product_cat(url):
 
     else:
         return "Unknown Product Type"
+# Price format conversion function
+def convert_price_format(price_str):
+    # Remove the currency symbol and any spaces
+    price_str = price_str.replace("$", "").strip()
+    
+    # Remove thousand separators (dots) and replace decimal comma with a dot
+    price_str = price_str.replace(".", "").replace(",", ".")
+    
+    # Convert to float
+    return float(price_str)
+
+
+def insert_into_db(product_data):
+    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
+    cur = conn.cursor()
+    insert_query = """
+    INSERT INTO product_prices (product_name, price, price_per_kg, product_category, scrape_date)
+    VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT (product_name, scrape_date) DO NOTHING;
+    """
+    for data in product_data:
+        # Convert price and price_per_kg to float
+        data[1] = convert_price_format(data[1])  # Convert product_price
+        data[2] = convert_price_format(data[2])  # Convert product_price_per_kg
+        cur.execute(insert_query, data)
+    conn.commit()
+    cur.close()
+    conn.close()
+
 # Adjust this path to where you save your file
 product_urls_file = 'product_urls.txt'
 product_urls = read_product_urls(product_urls_file)
 
 # Current date 
-scrape_date = datetime.now().strftime('%d-%m-%Y')
+scrape_date = datetime.now().strftime('%Y-%m-%d')
 
 # Prepare a list to hold product data
 products_data = []
@@ -154,13 +192,16 @@ for url in product_urls:
   try:
     product_cat = determine_product_cat(url)
     driver.get(url)
-    time.sleep(5)  # Adjust sleep time based on page load times
+    time.sleep(2)  # Adjust sleep time based on page load times
     
     product_name = driver.find_element(By.XPATH, '//h1[contains(@class, "productNameContainer")]').text
     # Check for "c/u" in the price text to decide which XPath to use
     price_element = driver.find_element(By.XPATH, '//*[contains(@class, "product-price-0-x-sellingPriceValue")]')
     if "c/u" in price_element.text:
         # If "c/u" is present, use an alternate XPath for the regular price
+        product_price_element = driver.find_element(By.XPATH, '//*[@class="valtech-carrefourar-product-price-0-x-listPrice"]') 
+        product_price = product_price_element.text
+    elif "%" in price_element.text:
         product_price_element = driver.find_element(By.XPATH, '//*[@class="valtech-carrefourar-product-price-0-x-listPrice"]') 
         product_price = product_price_element.text
     else:
@@ -175,14 +216,8 @@ for url in product_urls:
         continue  # Skip this URL and move to the next one
     
 
-# Write to CSV outside the loop
-csv_file = 'products_prices.csv'
-with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file)
-    writer.writerow(['Product Name', 'Price', 'Price per KG', 'Product Category', 'Date'])  # Write header
-    writer.writerows(products_data)
-
-print(f'Data saved to {csv_file}')
+# Insert data into the database
+insert_into_db(products_data)
 
 # Clean up by closing the driver after all operations
 driver.quit()
