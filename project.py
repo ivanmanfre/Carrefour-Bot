@@ -164,16 +164,42 @@ def convert_price_format(price_str):
 def insert_into_db(product_data):
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cur = conn.cursor()
+    
+    # SQL query to find the previous price_per_kg
+    prev_price_query = """
+    SELECT price_per_kg FROM product_prices
+    WHERE product_name = %s AND scrape_date < %s
+    ORDER BY scrape_date DESC
+    LIMIT 1;
+    """
+    
+    # Updated insert query to include the inflation rate
     insert_query = """
-    INSERT INTO product_prices (product_name, price, price_per_kg, product_category, scrape_date)
-    VALUES (%s, %s, %s, %s, %s)
+    INSERT INTO product_prices (product_name, price, price_per_kg, product_category, scrape_date, inflation_rate)
+    VALUES (%s, %s, %s, %s, %s, %s)
     ON CONFLICT (product_name, scrape_date) DO NOTHING;
     """
+    
     for data in product_data:
+        product_name, product_price, product_price_per_kg, product_cat, scrape_date = data
+        
         # Convert price and price_per_kg to float
-        data[1] = convert_price_format(data[1])  # Convert product_price
-        data[2] = convert_price_format(data[2])  # Convert product_price_per_kg
-        cur.execute(insert_query, data)
+        product_price = convert_price_format(product_price)
+        product_price_per_kg = convert_price_format(product_price_per_kg)
+        
+        # Retrieve the previous day's price_per_kg for the product
+        cur.execute(prev_price_query, (product_name, scrape_date))
+        result = cur.fetchone()
+        prev_price_per_kg = result[0] if result else None
+        
+        # Calculate the inflation rate if the previous price is available
+        inflation_rate = None
+        if prev_price_per_kg is not None:
+            inflation_rate = ((product_price_per_kg - prev_price_per_kg) / prev_price_per_kg) * 100
+        
+        # Insert the data along with the calculated inflation rate
+        cur.execute(insert_query, (product_name, product_price, product_price_per_kg, product_cat, scrape_date, inflation_rate))
+    
     conn.commit()
     cur.close()
     conn.close()
@@ -192,7 +218,7 @@ for url in product_urls:
   try:
     product_cat = determine_product_cat(url)
     driver.get(url)
-    time.sleep(2)  # Adjust sleep time based on page load times
+    time.sleep(5)  # Adjust sleep time based on page load times
     
     product_name = driver.find_element(By.XPATH, '//h1[contains(@class, "productNameContainer")]').text
     # Check for "c/u" in the price text to decide which XPath to use
