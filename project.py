@@ -159,6 +159,68 @@ def convert_price_format(price_str):
     
     # Convert to float
     return float(price_str)
+def update_category_inflation_rate(conn, scrape_date):
+    cur = conn.cursor()
+    
+    # Calculate the daily category inflation rate
+    calculate_inflation_query = """
+    WITH daily_inflation AS (
+        SELECT
+            product_category,
+            AVG(inflation_rate) AS avg_inflation_rate
+        FROM
+            product_prices
+        WHERE
+            scrape_date = %s AND inflation_rate IS NOT NULL
+        GROUP BY
+            product_category
+    )
+    UPDATE product_prices p
+    SET category_inflation_rate = d.avg_inflation_rate
+    FROM daily_inflation d
+    WHERE p.product_category = d.product_category AND p.scrape_date = %s;
+    """
+    
+    cur.execute(calculate_inflation_query, (scrape_date, scrape_date))
+    conn.commit()
+
+def update_partial_monthly_category_inflation_rate(conn, year, month):
+    cur = conn.cursor()
+    
+    # Adjusted query to calculate the partial monthly category inflation rate
+    calculate_partial_monthly_inflation_query = """
+    WITH daily_category_rates AS (
+        SELECT
+            product_category,
+            scrape_date,
+            AVG(category_inflation_rate) AS daily_avg_inflation_rate
+        FROM
+            product_prices
+        WHERE
+            EXTRACT(YEAR FROM scrape_date) = %s AND
+            EXTRACT(MONTH FROM scrape_date) = %s
+        GROUP BY
+            product_category, scrape_date
+    ),
+    monthly_inflation AS (
+        SELECT
+            product_category,
+            SUM(daily_avg_inflation_rate) AS sum_monthly_inflation_rate
+        FROM
+            daily_category_rates
+        GROUP BY
+            product_category
+    )
+    UPDATE product_prices p
+    SET monthly_category_inflation_rate = m.sum_monthly_inflation_rate
+    FROM monthly_inflation m
+    WHERE p.product_category = m.product_category AND
+          EXTRACT(YEAR FROM p.scrape_date) = %s AND
+          EXTRACT(MONTH FROM p.scrape_date) = %s;
+    """
+    
+    cur.execute(calculate_partial_monthly_inflation_query, (year, month, year, month))
+    conn.commit()
 
 
 def insert_into_db(product_data):
@@ -201,6 +263,14 @@ def insert_into_db(product_data):
         cur.execute(insert_query, (product_name, product_price, product_price_per_kg, product_cat, scrape_date, inflation_rate))
     
     conn.commit()
+
+    # After inserting, calculate and update the category inflation rates
+    update_category_inflation_rate(conn, scrape_date)
+    # Also, update the partial monthly category inflation rate
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+    update_partial_monthly_category_inflation_rate(conn, current_year, current_month)
+
     cur.close()
     conn.close()
 
