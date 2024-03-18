@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 import os
 import psycopg2
 import re
+import tweepy
+import locale
 
 # Database connection parameters
 dbname = 'portfolio'
@@ -22,6 +24,137 @@ service = Service('/Users/ivanmanfredi/Downloads/chromedriver-mac-arm64/chromedr
 driver = webdriver.Chrome(service=service)
 
 # Function to read URLs from a file
+def post_to_twitter(message):
+    # Your credentials - replace these with your own
+    consumer_key = "FtNaa3neJ19FmKfsqLW0gfcyH"
+    consumer_secret = "ihJIXzAlrqk6TTMALjgay9ddeg9WXKAKxlazmoZwZwe8vHvZzq"
+    access_token = "798548272256323585-a0bi8sYMSmsZ7lt6FXY5KWpRHZuMARt"
+    access_token_secret = "VKnT52mdSbKCUw23F883EQaS7sjYIlWdU9k43VvIQWKyN"
+
+    # Initialize Tweepy Client
+    client = tweepy.Client(
+        consumer_key=consumer_key,
+        consumer_secret=consumer_secret,
+        access_token=access_token,
+        access_token_secret=access_token_secret
+    )
+
+    try:
+        # Create a tweet using Tweepy Client for Twitter API v2
+        response = client.create_tweet(text=message)
+        print(f"Tweet posted successfully. Tweet ID: {response.data['id']}")
+    except tweepy.TweepyException as e:
+        print(f"Error posting tweet: {e}")
+def report_top_categories(conn, scrape_date):
+    # Convert string date to datetime object
+    date_object = datetime.strptime(scrape_date, '%Y-%m-%d')
+    # Format the date as '13 de Marzo de 2024'
+    formatted_scrape_date = date_object.strftime('%d de %B de %Y')
+    cur = conn.cursor()
+    query = """
+    SELECT product_category, AVG(monthly_category_inflation_rate) AS avg_inflation_rate
+    FROM product_prices
+    WHERE scrape_date = %s
+    GROUP BY product_category
+    ORDER BY avg_inflation_rate DESC
+    LIMIT 3;
+    """
+    cur.execute(query, (scrape_date,))
+    top_categories = cur.fetchall()
+
+    if top_categories:
+        message = f"Los productos que acumulan mayor incremento en el mes a hoy {formatted_scrape_date}:\n"
+        for category, rate in top_categories:
+            message += f"{category}: {rate:.2f}%\n"
+        
+        post_to_twitter(message)
+    else:
+        print("No data available to report.")
+def report_price_reductions(conn, scrape_date):
+    # Convert string date to datetime object
+    date_object = datetime.strptime(scrape_date, '%Y-%m-%d')
+    # Format the date as '13 de Marzo de 2024'
+    formatted_scrape_date = date_object.strftime('%d de %B de %Y')
+
+    cur = conn.cursor()
+    query = """
+    SELECT product_category, AVG(monthly_category_inflation_rate) AS avg_inflation_rate
+    FROM product_prices
+    WHERE scrape_date = %s
+    GROUP BY product_category
+    ORDER BY avg_inflation_rate ASC
+    LIMIT 3;
+    """
+    cur.execute(query, (scrape_date,))
+    price_reductions = cur.fetchall()
+
+    if price_reductions:
+        message = f"Productos con mayor reducción de precio del mes al {formatted_scrape_date}:\n"
+        for product_category, avg_inflation_rate in price_reductions:
+            message += f"{product_category}: {avg_inflation_rate:.2f}%\n"
+        
+        post_to_twitter(message)
+    else:
+        print("No data available for price reductions.")
+def report_combined_monthly_inflation(conn, scrape_date):
+    cur = conn.cursor()
+    # Set locale to Spanish to get the month name in Spanish
+    locale.setlocale(locale.LC_TIME, 'es_ES' if locale.getlocale()[0] is None else 'es_ES.UTF-8')
+    
+    # Convert scrape_date string to datetime object
+    date_object = datetime.strptime(scrape_date, '%Y-%m-%d')
+    # Format datetime object to get month name in Spanish
+    month_name = date_object.strftime('%B').capitalize()  # Capitalize the first letter
+    
+    # For debugging, show the month in YYYY-MM format
+    month = scrape_date[:7]
+    print(f"Debug: Month - {month}")  # Debugging print
+
+    combined_inflation_query = """
+    SELECT AVG(monthly_category_inflation_rate) AS overall_monthly_inflation_rate
+    FROM product_prices
+    WHERE CAST(scrape_date AS TEXT) LIKE %s || '%%';
+    """
+    # Use month in YYYY-MM format for SQL query
+    debug_month_param = f"{month}%"  # Include the wildcard in the parameter itself
+    print(f"Debug: SQL Query - {combined_inflation_query}")  # Debugging print
+    print(f"Debug: Parameter - {debug_month_param}")  # Debugging print
+
+    cur.execute(combined_inflation_query, (debug_month_param,))
+    result = cur.fetchone()
+
+    if result and result[0] is not None:
+        overall_monthly_inflation_rate = result[0]
+        message = f"La tasa de inflación acumulada actualmente en {month_name}: {overall_monthly_inflation_rate:.2f}%"
+        post_to_twitter(message)
+    else:
+        print("No data available for overall monthly inflation rate.")
+def report_weekly_inflation(conn, scrape_date):
+    # Determine if the current day is Sunday
+    current_date = datetime.strptime(scrape_date, '%Y-%m-%d')
+    if current_date.weekday() == 6:  # Sunday
+        cur = conn.cursor()
+        week_start = (current_date - timedelta(days=current_date.weekday())).strftime('%Y-%m-%d')
+        week_end = scrape_date
+
+        # Query to sum daily category inflation rates over the last week, per category
+        query = """
+        SELECT product_category,
+               SUM(category_inflation_rate) AS weekly_sum_inflation_rate
+        FROM product_prices
+        WHERE scrape_date >= %s AND scrape_date <= %s
+        GROUP BY product_category;
+        """
+        cur.execute(query, (week_start, week_end))
+        results = cur.fetchall()
+        
+        if results:
+            # Calculate the average of weekly summed inflation rates across categories
+            average_weekly_inflation = sum([result[1] for result in results]) / len(results)
+            message = f"La inflación acumulada semanal promedio entre todas las categorías al {scrape_date}: {average_weekly_inflation:.2f}%"
+            post_to_twitter(message)
+        else:
+            print("No data available for weekly inflation rate.")
 def read_product_urls(file_path):
     with open(file_path, 'r') as file:
         return [line.strip() for line in file]
@@ -223,6 +356,8 @@ def update_partial_monthly_category_inflation_rate(conn, year, month):
     conn.commit()
 
 
+
+
 def insert_into_db(product_data):
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cur = conn.cursor()
@@ -271,11 +406,18 @@ def insert_into_db(product_data):
     current_month = datetime.now().month
     update_partial_monthly_category_inflation_rate(conn, current_year, current_month)
 
+    report_top_categories(conn, scrape_date)
+    report_price_reductions(conn, scrape_date)
+    report_combined_monthly_inflation(conn, scrape_date)
+    # After all other processing, report weekly inflation if today is Sunday. Starting April
+    #report_weekly_inflation(conn, scrape_date)
+
+
     cur.close()
     conn.close()
 
 # Adjust this path to where you save your file
-product_urls_file = 'product_urls.txt'
+product_urls_file = '/Users/ivanmanfredi/Desktop/Carrefour/product_urls.txt'
 product_urls = read_product_urls(product_urls_file)
 
 # Current date 
